@@ -78,12 +78,13 @@ Result ProductionJob::execute(){
         QFile::remove(m_sgf + ".sgf");
         QFile::remove(m_sgf + ".train");
     }
+    emit sendmessage(100000); // init
     do {
         game.move();
         if (!game.waitForMove()) {
             return res;
         }
-        game.readMove();
+        emit sendmessage(game.readMove());
         m_boss->incMoves();
     } while (game.nextMove() && m_state.load() == RUNNING);
     switch (m_state.load()) {

@@ -33,7 +33,7 @@ public:
     bool gameStart(const VersionTuple& min_version);
     void move();
     bool waitForMove() { return waitReady(); }
-    bool readMove();
+    int readMove();
     bool nextMove();
     bool getScore();
     bool loadSgf(const QString &fileName);

@@ -21,11 +21,15 @@
 
 #include "Result.h"
 #include "Order.h"
+//#include "leelagtp.h"
 #include <QObject>
 #include <QAtomicInt>
 #include <QTextStream>
+#include <functional>
 class Management;
 using VersionTuple = std::tuple<int, int, int>;
+
+typedef void (*SendMsgSignal)(int);
 
 class Job : public QObject {
     Q_OBJECT
@@ -47,6 +51,10 @@ public:
     void store() {
         m_state.store(STORING);
     }
+    void connect_sendmessage(const QObject *arecver, const char *amember) {
+        connect(this, SIGNAL(sendmessage(int)),
+                arecver, amember);
+    }
 
 protected:
     QAtomicInt m_state;
@@ -55,6 +63,9 @@ protected:
     int m_moves;
     VersionTuple m_leelazMinVersion;
     Management *m_boss;
+
+signals:
+    void sendmessage(int);
 };
 
 
